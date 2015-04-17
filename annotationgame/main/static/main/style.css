@@ -1,0 +1,108 @@
+body,button
+{
+    font-family: Muli;
+}
+
+#topbar
+{
+    background-color: #5c4b51;
+    color: white;
+    margin: -8px;
+    margin-bottom: 85px;
+    height: 100px;
+}
+
+#level_label
+{
+    width: 150px;
+    float: left;
+    position: relative;
+    font-size: 25px;
+    margin: 35px;
+}
+
+#streak_label
+{
+    width: 500px;
+    margin: auto;
+    text-align: center;
+    position: relative;
+    top: 20px;
+}
+
+#current_streak_label
+{
+    font-size: 35px;
+
+}
+
+#needed_for_next_label
+{
+    color: #d7d7d7
+}
+
+#answer_button_area
+{
+    margin: auto;
+    display: table;
+}
+
+#stimulus
+{
+    background-color: #f6f5f3;
+    color: #5b5a5a;
+    border-radius: 10px;
+    width: 750px;
+    margin: auto;
+    padding: 30px;
+}
+
+h1
+{
+text-align: center;
+color: #eeb643;
+font-weight: normal;
+font-size: 44px;
+}
+
+button
+{
+    border: 0px;
+    cursor: pointer;
+}
+
+.navigation_button
+{
+    float: right;
+    float: right;
+    width: 75px;
+    height: 75px;
+    margin: 10px;
+    position: relative;
+    border-radius: 36px;
+    margin-right: 20px;
+}
+
+#info_button
+{
+    background-image: linear-gradient(90deg, #f06060 50%, #c44e4e 51%);
+}
+
+#highscore_button
+{
+    background-image: linear-gradient(90deg, #8bbdb2 50%, #719a91 51%);
+}
+
+.answer_button
+{
+    background-color: #eeb643;
+    background-image: linear-gradient(180deg, #eeb643 50%, #dba83e 51%);
+    padding-left: 29px;
+    padding-right: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 35px;
+    color: white;
+    font-size: 29px;
+    border-radius: 17px;
+}
