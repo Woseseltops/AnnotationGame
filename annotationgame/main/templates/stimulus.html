@@ -1,0 +1,37 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}" />
+    <link href="http://fonts.googleapis.com/css?family=Muli" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <div id="topbar">
+        <div id="level_label">Level: 2</div>
+
+        <button class="navigation_button" id="highscore_button"></button>
+        <button class="navigation_button" id="info_button"></button>
+
+
+        <div id="streak_label">
+            <div id="current_streak_label">
+                Current streak: 5
+            </div>
+            <div id="needed_for_next_label">
+                Needed for next level: 15
+            </div>
+        </div>
+        </div>
+    </div>
+    <h1>Dream or personal story?</h1>
+    <div id="stimulus">I enter a lovely huge room where lots of people are. I walk past a long dining table toward a second room where I'm told there are Dee Dee's rich Uncle's glass bell scales. I look in and the room is filled with beautiful glass objects. We're not supposed to go in yet. So I see Dee and decide to go sit by her since she has a rich Uncle. I pass up a wooden high chair and sit on a wooden dining chair. I remember she was always refined and smart, so I guess it shouldn't be a surprise that she has a rich Uncle. Later I decide to choose a room and at first go to a plain room out of habit. Then I say, "Wait." I look around. I mentally review all the rooms and, since I don't see any I like, I envision one I'd like to be there. It's all glass, a balcony and it has beautiful glass and crystal objects that shine rainbows like a prism all over the room. I use this room to write in because I become mesmerized by the lovely rainbows printing about the room, and I go into a trance, so my writing comes up straight from the subconscious.</div>
+    <div id="answer_button_area">
+        {% for answer in answers %}
+            <button class="answer_button">{{answer}}</button>
+        {% endfor %}
+    </div>
+</body>
+</html>
