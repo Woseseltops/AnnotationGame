@@ -6,6 +6,7 @@ urlpatterns = [
     # url(r'^$', 'annotationgame.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-     url(r'^$', 'main.views.stimulus'),
+    url(r'^$', 'main.views.stimulus'),
+    url(r'^add_answer/(?P<stimulus_index>[0-9]{1,4})/(?P<answer_pk>[0-9]{1,4})$', 'main.views.add_answer'),
     url(r'^admin/', include(admin.site.urls)),
 ]

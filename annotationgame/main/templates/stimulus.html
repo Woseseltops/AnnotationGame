@@ -5,8 +5,62 @@
 <head lang="en">
     <link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}" />
     <link href="http://fonts.googleapis.com/css?family=Muli" rel="stylesheet" type="text/css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Annotation game</title>
+
+    <script>
+        $(document).ready(function ()
+        {
+            //Prepare Jquery to work with Django
+
+            function getCookie(name)
+            {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            var csrftoken = getCookie('csrftoken');
+
+            function csrfSafeMethod(method)
+            {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+
+           $.ajaxSetup(
+           {
+                beforeSend: function(xhr, settings)
+                {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain)
+                    {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+
+            //The actual button click
+            $('.answer_button').click(function()
+            {
+                $.post("add_answer/{{stimulus_index}}/"+$(this).attr('pk'), function( data )
+                {
+                  alert('Posted');
+                });
+            });
+        });
+
+    </script>
+
 </head>
 <body>
     <div id="topbar">
@@ -27,10 +81,10 @@
         </div>
     </div>
     <h1>Dream or personal story?</h1>
-    <div id="stimulus">I enter a lovely huge room where lots of people are. I walk past a long dining table toward a second room where I'm told there are Dee Dee's rich Uncle's glass bell scales. I look in and the room is filled with beautiful glass objects. We're not supposed to go in yet. So I see Dee and decide to go sit by her since she has a rich Uncle. I pass up a wooden high chair and sit on a wooden dining chair. I remember she was always refined and smart, so I guess it shouldn't be a surprise that she has a rich Uncle. Later I decide to choose a room and at first go to a plain room out of habit. Then I say, "Wait." I look around. I mentally review all the rooms and, since I don't see any I like, I envision one I'd like to be there. It's all glass, a balcony and it has beautiful glass and crystal objects that shine rainbows like a prism all over the room. I use this room to write in because I become mesmerized by the lovely rainbows printing about the room, and I go into a trance, so my writing comes up straight from the subconscious.</div>
+    <div id="stimulus">{{stimulus_text}}</div>
     <div id="answer_button_area">
         {% for answer in answers %}
-            <button class="answer_button">{{answer}}</button>
+            <button pk="{{answer.pk}}" class="answer_button">{{answer.text}}</button>
         {% endfor %}
     </div>
 </body>
