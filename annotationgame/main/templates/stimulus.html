@@ -5,15 +5,31 @@
 <head lang="en">
     <link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}" />
     <link href="http://fonts.googleapis.com/css?family=Muli" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Fanwood+Text' rel='stylesheet' type='text/css'>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <meta charset="UTF-8">
     <title>Annotation game</title>
 
     <script>
+        function streak_to_level_info(streak)
+        {
+            level_investigating = 0
+
+            while (1)
+            {
+                streak_needed = Math.floor(Math.pow(level_investigating,1.5));
+                if(streak < streak_needed)
+                {
+                    return [level_investigating,streak_needed];
+                }
+
+                level_investigating += 1;
+            }
+        }
+
         $(document).ready(function ()
         {
             //Prepare Jquery to work with Django
-
             function getCookie(name)
             {
                 var cookieValue = null;
@@ -49,12 +65,66 @@
                 }
             });
 
-            //The actual button click
+            //Hide elements that should pop up later
+            $('.feedback_icon').hide();
+            $('#level_feedback_area').hide();
+
+            //Update streak and level info
+            if(localStorage['streak'] == null)
+            {
+                localStorage['streak'] = 0;
+            }
+
+            $('#current_streak_label').append(localStorage['streak']);
+
+            level_info = streak_to_level_info(localStorage['streak']);
+            current_level = level_info[0];
+            $('#level_label').append(current_level);
+            $('#level_feedback_area').html($('#level_feedback_area').html().replace('x',current_level));
+            $('#needed_for_next_label').append(level_info[1]);
+
+            //Click one of the answers
             $('.answer_button').click(function()
             {
+                button_position = $(this).position();
+                button_width = $(this).outerWidth();
+
                 $.post("add_answer/{{stimulus_index}}/"+$(this).attr('pk'), function( data )
                 {
-                  alert('Posted');
+                    $('.feedback_icon').css('left',button_position.left+button_width+18);
+                    $('.feedback_icon').css('top',button_position.top+20);
+
+                    if (data == 'True')
+                    {
+                        localStorage['streak'] = parseInt(localStorage['streak'])+1;
+                        icon_identifier="okay";
+                    }
+                    else if (data == 'False')
+                    {
+                        localStorage['streak'] = 0;
+                        icon_identifier="wrong";
+                    }
+
+                   $('#'+icon_identifier+'_icon').fadeIn(500, function()
+                    {
+                        $('#'+icon_identifier+'_icon').fadeOut(500, function()
+                        {
+                            //If the level changes, show this
+                            new_level = streak_to_level_info(localStorage['streak'])[0];
+                            if (new_level != current_level && new_level != 1)
+                            {
+                                $('#level_feedback_area').fadeIn(1000,function()
+                                {
+                                    setTimeout(window.location.reload.bind(window.location), 1000);
+                                });
+                            }
+                            else
+                            {
+                                location.reload()
+                            }
+                        });
+                    });
+
                 });
             });
         });
@@ -64,25 +134,31 @@
 </head>
 <body>
     <div id="topbar">
-        <div id="level_label">Level: 2</div>
+        <div id="level_label">Level: </div>
 
-        <button class="navigation_button" id="highscore_button"></button>
-        <button class="navigation_button" id="info_button"></button>
+        <button class="navigation_button" id="highscore_button"><img id="cup_icon" src="{% static 'main/cup.svg' %}"></button>
+        <button class="navigation_button" id="info_button">i</button>
 
 
         <div id="streak_label">
             <div id="current_streak_label">
-                Current streak: 5
+                Current streak:
             </div>
             <div id="needed_for_next_label">
-                Needed for next level: 15
+                Needed for next level:
             </div>
         </div>
         </div>
     </div>
     <h1>Dream or personal story?</h1>
+    <div id="level_feedback_area">Level x completed!<br><img id="thumbs_up_image" src="{% static 'main/thumbs_up.svg' %}"></div>
     <div id="stimulus">{{stimulus_text}}</div>
     <div id="answer_button_area">
+        <div id="feedback_icon_area">
+            <img class="feedback_icon" id="okay_icon" src="{% static 'main/okay icon.svg' %}">
+            <img class="feedback_icon" id="wrong_icon" src="{% static 'main/wrong icon.svg' %}">
+        </div>
+
         {% for answer in answers %}
             <button pk="{{answer.pk}}" class="answer_button">{{answer.text}}</button>
         {% endfor %}

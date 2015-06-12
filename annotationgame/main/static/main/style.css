@@ -41,20 +41,40 @@ body,button
     color: #d7d7d7
 }
 
+#feedback_icon_area
+{
+    height: 0px;
+}
+
 #answer_button_area
 {
     margin: auto;
     display: table;
 }
 
+#stimulus, #level_feedback_area
+{
+    border-radius: 10px;
+    margin: auto;
+    padding: 30px;
+}
+
 #stimulus
 {
     background-color: #f6f5f3;
     color: #5b5a5a;
-    border-radius: 10px;
     width: 750px;
-    margin: auto;
-    padding: 30px;
+}
+
+#level_feedback_area
+{
+    background-color: #8bbdb2;
+    color: white;
+    font-size: 30px;
+    width: 300px;
+    position: absolute;
+    left: 0;
+    right: 0;
 }
 
 h1
@@ -86,6 +106,10 @@ button
 #info_button
 {
     background-image: linear-gradient(90deg, #f06060 50%, #c44e4e 51%);
+    font-family: Fanwood;
+    font-size: 80px;
+    color: white;
+    line-height:80px
 }
 
 #highscore_button
@@ -106,3 +130,24 @@ button
     font-size: 29px;
     border-radius: 17px;
 }
+
+.feedback_icon
+{
+    width: 35px;
+    position: absolute;
+}
+
+#thumbs_up_image
+{
+    position: relative;
+    left: -30px;
+    top: 12px;
+}
+
+#cup_icon
+{
+    position: relative;
+    left: 1px;
+    top: 1px;
+}
+
