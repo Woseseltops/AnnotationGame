@@ -107,7 +107,7 @@ button
 {
     background-image: linear-gradient(90deg, #f06060 50%, #c44e4e 51%);
     font-family: Fanwood;
-    font-size: 80px;
+    font-size: 63px;
     color: white;
     line-height:80px
 }
@@ -129,6 +129,11 @@ button
     color: white;
     font-size: 29px;
     border-radius: 17px;
+}
+
+.answer_button:hover
+{
+    background-image: linear-gradient(180deg, #eeb643 90%, #dba83e 91%);
 }
 
 .feedback_icon
