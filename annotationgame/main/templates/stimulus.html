@@ -70,14 +70,15 @@
             $('#level_feedback_area').hide();
 
             //Update streak and level info
-            if(localStorage['streak'] == null)
+            if(localStorage['streak_length'] == null)
             {
-                localStorage['streak'] = 0;
+                localStorage['streak_length'] = 0;
+                localStorage['streak_id'] = null;
             }
 
-            $('#current_streak_label').append(localStorage['streak']);
+            $('#current_streak_label').append(localStorage['streak_length']);
 
-            level_info = streak_to_level_info(localStorage['streak']);
+            level_info = streak_to_level_info(localStorage['streak_length']);
             current_level = level_info[0];
             $('#level_label').append(current_level);
             $('#level_feedback_area').html($('#level_feedback_area').html().replace('x',current_level));
@@ -89,19 +90,27 @@
                 button_position = $(this).position();
                 button_width = $(this).outerWidth();
 
-                $.post("add_answer/{{stimulus_index}}/"+$(this).attr('pk'), function( data )
+                //Send in the answer, but also send along the streak info
+                $.post("add_answer/{{stimulus_index}}/"+$(this).attr('pk'),{'streak_id':localStorage['streak_id'],'streak_length':parseInt(localStorage['streak_length'])+1}, function( data )
                 {
+                    data = JSON.parse(data);
+
+                    //Save the streak id in local storage
+                    localStorage['streak_id'] = data['streak_id']
+
+                    //Make the feedback icon appear
                     $('.feedback_icon').css('left',button_position.left+button_width+18);
                     $('.feedback_icon').css('top',button_position.top+20);
 
-                    if (data == 'True')
+                    if (data['correct'] == true)
                     {
-                        localStorage['streak'] = parseInt(localStorage['streak'])+1;
+                        localStorage['streak_length'] = parseInt(localStorage['streak_length'])+1;
                         icon_identifier="okay";
                     }
-                    else if (data == 'False')
+                    else if (data['correct'] == false)
                     {
-                        localStorage['streak'] = 0;
+                        localStorage['streak_length'] = 0;
+                        localStorage['streak_id'] = null;
                         icon_identifier="wrong";
                     }
 
@@ -110,17 +119,31 @@
                         $('#'+icon_identifier+'_icon').fadeOut(500, function()
                         {
                             //If the level changes, show this
-                            new_level = streak_to_level_info(localStorage['streak'])[0];
+                            new_level = streak_to_level_info(localStorage['streak_length'])[0];
                             if (new_level != current_level && new_level != 1)
                             {
                                 $('#level_feedback_area').fadeIn(1000,function()
                                 {
-                                    setTimeout(window.location.reload.bind(window.location), 1000);
+                                    if (data['ask_for_name'] == true)
+                                    {
+                                        setTimeout(window.location.replace('playername/'+localStorage['streak_id']), 1000);
+                                    }
+                                    else
+                                    {
+                                        setTimeout(window.location.reload.bind(window.location), 1000);
+                                    }
                                 });
                             }
                             else
                             {
-                                location.reload()
+                                if (data['ask_for_name'] == true)
+                                {
+                                    setTimeout(window.location.reload.bind(window.location), 1000);
+                                }
+                                else
+                                {
+                                    location.reload()
+                                }
                             }
                         });
                     });
@@ -133,23 +156,7 @@
 
 </head>
 <body>
-    <div id="topbar">
-        <div id="level_label">Level: </div>
-
-        <button class="navigation_button" id="highscore_button"><img id="cup_icon" src="{% static 'main/cup.svg' %}"></button>
-        <button class="navigation_button" id="info_button">i</button>
-
-
-        <div id="streak_label">
-            <div id="current_streak_label">
-                Current streak:
-            </div>
-            <div id="needed_for_next_label">
-                Needed for next level:
-            </div>
-        </div>
-        </div>
-    </div>
+    {% include "menu.html" %}
     <h1>Dream or personal story?</h1>
     <div id="level_feedback_area">Level x completed!<br><img id="thumbs_up_image" src="{% static 'main/thumbs_up.svg' %}"></div>
     <div id="stimulus">{{stimulus_text}}</div>

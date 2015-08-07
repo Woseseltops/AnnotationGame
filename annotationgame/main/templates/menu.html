@@ -1,0 +1,28 @@
+{% load staticfiles %}
+    <script type="text/javascript">
+    $(window).ready(function()
+    {
+        $("#highscore_button").click(function()
+        {
+            window.location.replace('highscore');
+        });
+    });
+    </script>
+
+    <div id="topbar">
+        <div id="level_label">Level: </div>
+
+        <button class="navigation_button" id="highscore_button"><img id="cup_icon" src="{% static 'main/cup.svg' %}"></button>
+        <button class="navigation_button" id="info_button">i</button>
+
+
+        <div id="streak_label">
+            <div id="current_streak_label">
+                Current streak:
+            </div>
+            <div id="needed_for_next_label">
+                Needed for next level:
+            </div>
+        </div>
+        </div>
+    </div>
