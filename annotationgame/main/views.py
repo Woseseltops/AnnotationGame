@@ -25,7 +25,9 @@ def stimulus(request):
 
     return render(request,'stimulus.html',{'answers':Answer.objects.all(),
                                            'stimulus_index':random_stimulus_index,
-                                           'stimulus_text':all_stimuli[random_stimulus_index]})
+                                           'stimulus_text':all_stimuli[random_stimulus_index],
+                                           'button_to_omit':'home',
+                                           'show_stats':True})
 
 @require_http_methods(["POST"])
 def add_answer(request,stimulus_index,answer_pk):
@@ -74,4 +76,5 @@ def playername(request,streak_id):
 
 def highscore(request):
 
-    return render(request,'highscore.html',{'highscore':get_highscore()})
+    return render(request,'highscore.html',{'highscore':get_highscore(),
+                                            'button_to_omit':'cup'})

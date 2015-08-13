@@ -6,16 +6,31 @@
         {
             window.location.replace('highscore');
         });
+
+        $("#home_button").click(function()
+        {
+            window.location.replace('..');
+        });
+
     });
     </script>
 
     <div id="topbar">
+        {% if show_stats %}
         <div id="level_label">Level: </div>
+        {% endif %}
 
+        {% if button_to_omit != 'home' %}
+        <button class="navigation_button" id="home_button"><img id="home_icon" src="{% static 'main/home.svg' %}"></button>
+        {% endif %}
+        {% if button_to_omit != 'cup' %}
         <button class="navigation_button" id="highscore_button"><img id="cup_icon" src="{% static 'main/cup.svg' %}"></button>
+        {% endif %}
+        {% if button_to_omit != 'info' %}
         <button class="navigation_button" id="info_button">i</button>
+        {% endif %}
 
-
+        {% if show_stats %}
         <div id="streak_label">
             <div id="current_streak_label">
                 Current streak:
@@ -24,5 +39,7 @@
                 Needed for next level:
             </div>
         </div>
+        {% endif %}
+
         </div>
     </div>

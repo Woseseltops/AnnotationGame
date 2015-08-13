@@ -84,16 +84,45 @@ body,button
 
 h1
 {
-text-align: center;
-color: #eeb643;
-font-weight: normal;
-font-size: 44px;
+    text-align: center;
+    font-weight: normal;
+    font-size: 44px;
+}
+
+.yellow
+{
+    color: #eeb643;
+}
+
+th, .green
+{
+    color: #8bbdb2;
+}
+
+.red
+{
+    color: #f06060;
 }
 
 button
 {
     border: 0px;
     cursor: pointer;
+}
+
+table
+{
+    font-size: 20px;
+}
+
+th
+{
+    font-size:40px;
+}
+
+td
+{
+    padding: 20px;
 }
 
 .navigation_button
@@ -120,6 +149,11 @@ button
 #highscore_button
 {
     background-image: linear-gradient(90deg, #8bbdb2 50%, #719a91 51%);
+}
+
+#home_button
+{
+    background-image: linear-gradient(90deg, #eeb643 50%, #dc9914 51%);
 }
 
 .answer_button

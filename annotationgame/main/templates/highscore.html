@@ -12,13 +12,13 @@
 <body>
 {% include 'menu.html' %}
 
-<h1>Highscore</h1>
+<h1 class="green">Highscore</h1>
 <div id="centerfield">
     <table>
 
     {% for streak in highscore %}
 
-        <tr><td>{{ forloop.counter }}</td><td>{{ streak.playername }}</td><td>{{ streak.length }}</td></tr>
+        <tr><th>{{ forloop.counter }}</th><td>{{ streak.playername }}</td><td>{{ streak.length }}</td></tr>
     {% endfor %}
 
     </table>
