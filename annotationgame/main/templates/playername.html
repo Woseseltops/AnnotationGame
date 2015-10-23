@@ -13,7 +13,7 @@
 {% include 'menu.html' %}
 <div id="centerfield">
     <p>You made the highscore! Please give your name:</p>
-    <form method="post" action="/">
+    <form method="post" action="/annotationgame">
         {% csrf_token %}
         <input type="text" name="playername">
         <input type="hidden" name="streak_id" value="{{streak_id}}">
