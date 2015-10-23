@@ -65,6 +65,16 @@
                 }
             });
 
+            //Decide whether to use the story the server provided, or the one in local memory
+            if(localStorage['stimulus_index'] == null || localStorage['stimulus_index'] == -1)
+            {                   
+                localStorage['stimulus_index'] = {{ stimulus_index }};
+                localStorage['stimulus_text'] = "{{ stimulus_text }}";
+            }
+
+            //Show it on the screen
+            $('#stimulus').html(localStorage['stimulus_text']);
+
             //Hide elements that should pop up later
             $('.feedback_icon').hide();
             $('#level_feedback_area').hide();
@@ -91,12 +101,16 @@
                 button_width = $(this).outerWidth();
 
                 //Send in the answer, but also send along the streak info
-                $.post("add_answer/{{stimulus_index}}/"+$(this).attr('pk'),{'streak_id':localStorage['streak_id'],'streak_length':parseInt(localStorage['streak_length'])+1}, function( data )
+                $.post("/annotationgame/add_answer/"+localStorage["stimulus_index"]+"/"+$(this).attr('pk'),{'streak_id':localStorage['streak_id'],'streak_length':parseInt(localStorage['streak_length'])+1}, function( data )
                 {
                     data = JSON.parse(data);
 
                     //Save the streak id in local storage
                     localStorage['streak_id'] = data['streak_id']
+
+                    //Reset the text locked in browser memory
+                    localStorage['stimulus_index'] = -1;
+                    localStorage['stimulus_text'] = -1;
 
                     //Make the feedback icon appear
                     $('.feedback_icon').css('left',button_position.left+button_width+18);
@@ -159,7 +173,7 @@
     {% include "menu.html" %}
     <h1 class="yellow">Dream or personal story?</h1>
     <div id="level_feedback_area">Level x completed!<br><img id="thumbs_up_image" src="{% static 'main/thumbs_up.svg' %}"></div>
-    <div id="stimulus">{{stimulus_text}}</div>
+    <div id="stimulus"></div>
     <div id="answer_button_area">
         <div id="feedback_icon_area">
             <img class="feedback_icon" id="okay_icon" src="{% static 'main/okay icon.svg' %}">
