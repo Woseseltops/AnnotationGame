@@ -10,5 +10,6 @@ urlpatterns = [
     url(r'^add_answer/(?P<stimulus_index>[0-9]{1,4})/(?P<answer_pk>[0-9]{1,4})$', 'main.views.add_answer'),
     url(r'^playername/(?P<streak_id>[0-9]{1,4})','main.views.playername'),
     url(r'^highscore/','main.views.highscore'),
+    url(r'^info/','main.views.info'),
     url(r'^admin/', include(admin.site.urls)),
 ]

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
 
 from models import Answer, Annotation, Streak, calculate_minimum_streak_to_enter_highscore, get_highscore
 from annotationgame.settings import STIMULI_FILE_LOCATION
@@ -29,7 +30,9 @@ def stimulus(request):
                                            'button_to_omit':'home',
                                            'show_stats':True})
 
+
 @require_http_methods(["POST"])
+@csrf_exempt
 def add_answer(request,stimulus_index,answer_pk):
 
     response = {}
@@ -48,7 +51,7 @@ def add_answer(request,stimulus_index,answer_pk):
         minimum_streak_to_enter_highscore = calculate_minimum_streak_to_enter_highscore()
 
         #First, see whether this is info to add to an existing streak
-        if request.POST['streak_id'] not in [None,'undefined','null']:
+        if request.POST['streak_id'] not in [None,'undefined','null',False,'false']:
 
             current_streak = Streak.objects.filter(pk=request.POST['streak_id'])[0]
             current_streak.length = request.POST['streak_length']
@@ -73,6 +76,10 @@ def add_answer(request,stimulus_index,answer_pk):
 def playername(request,streak_id):
 
     return render(request,'playername.html',{'streak_id':streak_id})
+
+def info(request):
+
+    return render(request,'info.html', {'button_to_omit':'info'})
 
 def highscore(request):
 

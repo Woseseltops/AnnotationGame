@@ -143,7 +143,6 @@ td
     font-family: Fanwood;
     font-size: 63px;
     color: white;
-    line-height:80px
 }
 
 #highscore_button
@@ -195,3 +194,9 @@ td
     top: 1px;
 }
 
+#info_icon
+{
+	position: relative;
+	top: -1px;
+	width: 9px;
+}
